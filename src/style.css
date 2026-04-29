@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wabi-moss: #5D7052;
+}
+
+/* Fix the Vite centering issue */
+#app {
+  width: 100%;
+  margin: 0;
+  display: block;
+}
