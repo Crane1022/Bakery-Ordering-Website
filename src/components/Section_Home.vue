@@ -3,7 +3,7 @@ import BiscuitForm from './Biscuit_Form.vue'
 import Product_List from './Product_List.vue';
 
 defineProps({
-images: Array
+    images: Array
 })
 </script>
 
