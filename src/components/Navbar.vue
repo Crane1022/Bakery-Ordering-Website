@@ -1,13 +1,36 @@
 <script setup>
 import { ref } from 'vue'
-import { ShoppingBag, Menu, X } from 'lucide-vue-next'
+import { useRouter } from 'vue-router'
+import { ShoppingBag, Menu, X, User, LogOut } from 'lucide-vue-next'
+import { useCart } from '../store/cart'
+import { useAuth } from '../store/auth'
+import ConfirmModal from './ConfirmModal.vue'
 
 // Track menu is Open
 const isMenuOpen = ref(false)
+const isAccountOpen = ref(false)
+const showLogoutConfirm = ref(false)
+
+// Shared state
+const { cartCount } = useCart()
+const { currentUser, isLoggedIn, logout } = useAuth()
+const router = useRouter()
 
 // Function to close menu when a link is clicked
 const closeMenu = () => {
   isMenuOpen.value = false
+}
+
+const requestLogout = () => {
+  isAccountOpen.value = false
+  closeMenu()
+  showLogoutConfirm.value = true
+}
+
+const confirmLogout = () => {
+  logout()
+  showLogoutConfirm.value = false
+  router.push('/Bakery-Website/')
 }
 </script>
 
@@ -16,26 +39,60 @@ const closeMenu = () => {
     <div class="font-serif text-2xl font-bold text-wabi-moss">WabiSabi Home</div>
 
     <div class="hidden md:flex items-center gap-8 font-medium text-stone-600">
-        <router-link to="/" class="hover:text-wabi-moss transition-colors">
+        <router-link to="/Bakery-Website/" class="hover:text-wabi-moss transition-colors">
             Home
         </router-link>
-        <router-link to="/shop" class="hover:text-wabi-moss transition-colors">
+        <router-link to="/Bakery-Website/shop" class="hover:text-wabi-moss transition-colors">
             Order Now
         </router-link>
-        <a href="#" class="hover:text-wabi-moss transition-colors">Our Ingredients</a>
-        <a href="#" class="hover:text-wabi-moss transition-colors">Reviews</a>
+        <router-link to="/Bakery-Website/ingredients" class="hover:text-wabi-moss transition-colors">
+            Our Ingredients
+        </router-link>
+        <router-link to="/Bakery-Website/reviews" class="hover:text-wabi-moss transition-colors">
+            Reviews
+        </router-link>
     </div>
     <div class="flex items-center gap-4">
-      <div class="relative cursor-pointer text-stone-600 hover:text-wabi-moss transition-colors mr-2">
+      <router-link to="/Bakery-Website/checkout" class="relative cursor-pointer text-stone-600 hover:text-wabi-moss transition-colors mr-2">
         <ShoppingBag class="w-6 h-6" />
-        <span class="absolute -top-2 -right-2 bg-wabi-moss text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">0</span>
-      </div>
+        <span class="absolute -top-2 -right-2 bg-wabi-moss text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+          {{ cartCount }}
+        </span>
+      </router-link>
 
-        <router-link to="/checkout" class="hover:text-wabi-moss transition-colors">
-            <button class="hidden md:flex bg-wabi-moss text-white px-6 py-2 rounded-full font-semibold hover:bg-opacity-90 transition-all active:scale-95 shadow-md">
-                Check Out
+      <!-- Account: logged out -->
+      <router-link
+        v-if="!isLoggedIn"
+        to="/Bakery-Website/login"
+        class="hidden md:flex bg-wabi-moss text-white px-6 py-2 rounded-full font-semibold hover:bg-opacity-90 transition-all active:scale-95 shadow-md">
+        Login
+      </router-link>
+
+      <!-- Account: logged in -->
+      <div v-else class="hidden md:block relative">
+        <button
+          @click="isAccountOpen = !isAccountOpen"
+          class="flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-2 rounded-full font-semibold transition-all">
+          <User class="w-4 h-4" />
+          {{ currentUser.name.split(' ')[0] }}
+        </button>
+
+        <transition name="slide">
+          <div v-if="isAccountOpen" class="absolute right-0 mt-3 w-48 bg-white rounded-2xl border border-stone-100 shadow-xl p-2 z-40">
+            <router-link
+              @click="isAccountOpen = false"
+              to="/Bakery-Website/profile"
+              class="flex items-center gap-2 px-4 py-3 rounded-xl text-stone-700 font-medium hover:bg-wabi-moss/10 hover:text-wabi-moss transition-all">
+              <User class="w-4 h-4" /> Profile
+            </router-link>
+            <button
+              @click="requestLogout"
+              class="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-stone-700 font-medium hover:bg-red-50 hover:text-red-500 transition-all">
+              <LogOut class="w-4 h-4" /> Logout
             </button>
-        </router-link>
+          </div>
+        </transition>
+      </div>
 
       <button @click="isMenuOpen = !isMenuOpen" class="flex md:hidden items-center p-2 text-wabi-moss">
         <Menu v-if="!isMenuOpen" class="w-6 h-6" />
@@ -46,16 +103,38 @@ const closeMenu = () => {
     <!-- Mobile Dropdown List -->
     <transition name="slide">
       <div v-if="isMenuOpen" class="absolute top-20 left-0 w-full bg-white/95 backdrop-blur-lg rounded-3xl border border-stone-200 shadow-xl p-8 flex flex-col gap-6 md:hidden z-40">
-        <router-link @click="closeMenu" to="/" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Home</router-link>
-        <router-link @click="closeMenu" to="/shop" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Order Now</router-link>
-        <a @click="closeMenu" href="#" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Our Ingredients</a>
-        <a @click="closeMenu" href="#" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Reviews</a>
+        <router-link @click="closeMenu" to="/Bakery-Website/" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Home</router-link>
+        <router-link @click="closeMenu" to="/Bakery-Website/shop" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Order Now</router-link>
+        <router-link @click="closeMenu" to="/Bakery-Website/ingredients" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Our Ingredients</router-link>
+        <router-link @click="closeMenu" to="/Bakery-Website/reviews" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Reviews</router-link>
         <hr class="border-stone-100" />
-        <router-link @click="closeMenu" to="/checkout">
+
+        <template v-if="!isLoggedIn">
+          <router-link @click="closeMenu" to="/Bakery-Website/login" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Login</router-link>
+          <router-link @click="closeMenu" to="/Bakery-Website/register" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Register</router-link>
+        </template>
+        <template v-else>
+          <router-link @click="closeMenu" to="/Bakery-Website/profile" class="text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-wabi-moss/10 hover:text-wabi-moss active:scale-95">Profile</router-link>
+          <button @click="requestLogout" class="text-left text-xl font-bold text-stone-800 px-6 py-4 rounded-2xl transition-all hover:bg-red-50 hover:text-red-500 active:scale-95">Logout</button>
+        </template>
+
+        <router-link @click="closeMenu" to="/Bakery-Website/checkout">
           <button class="w-full bg-wabi-moss text-white py-4 rounded-full font-bold">Check Out</button>
         </router-link>
       </div>
     </transition>
+
+    <!-- Logout confirmation -->
+    <ConfirmModal
+      :show="showLogoutConfirm"
+      title="Log Out?"
+      message="You'll need to sign in again to view your profile and order history."
+      confirm-text="Log Out"
+      cancel-text="Stay Signed In"
+      danger
+      @confirm="confirmLogout"
+      @cancel="showLogoutConfirm = false"
+    />
   </nav>
 </template>
 

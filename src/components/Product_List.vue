@@ -1,30 +1,13 @@
 <script setup>
-const products = [
-  {
-    id: 1,
-    name: "Classic Honey Oat",
-    description: "Slow-baked with organic wild honey and rolled oats.",
-    price: "$12.00",
-    image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=500&auto=format&fit=crop",
-    tag: "Best Seller"
-  },
-  {
-    id: 2,
-    name: "Dark Cacao & Sea Salt",
-    description: "Rich 70% dark chocolate with a pinch of hand-harvested salt.",
-    price: "$14.00",
-    image: "https://images.unsplash.com/photo-1590080874088-eec64895b423?q=80&w=500&auto=format&fit=crop",
-    tag: "New"
-  },
-  {
-    id: 3,
-    name: "Lavender Lemon Shortbread",
-    description: "Delicate floral notes paired with fresh zesty citrus.",
-    price: "$13.00",
-    image: "https://images.unsplash.com/photo-1530648672449-81f6c723e2c1?q=80&w=500&auto=format&fit=crop",
-    tag: "Seasonal"
-  }
-]
+import { computed } from 'vue'
+import { products } from '../store/products'
+import { useCart } from '../store/cart'
+
+// Home only ever shows a max of 3 — Shop.vue has no cap, it loops over
+// the full `products` array as-is.
+const featuredProducts = computed(() => products.slice(0, 3))
+
+const { addToCart } = useCart()
 </script>
 
 <template>
@@ -42,7 +25,7 @@ const products = [
 
       <!-- Product Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-        <div v-for="product in products" :key="product.id" 
+        <div v-for="product in featuredProducts" :key="product.id" 
             class="group cursor-pointer bg-white p-4 rounded-[2rem] border border-stone-100 shadow-sm hover:shadow-xl transition-all duration-500">
           
           <!-- Image Container -->
@@ -58,13 +41,15 @@ const products = [
           <div class="space-y-2 px-2">
             <div class="flex justify-between items-center">
               <h3 class="text-xl font-bold text-stone-800">{{ product.name }}</h3>
-              <span class="text-wabi-moss font-bold">{{ product.price }}</span>
+              <span class="text-wabi-moss font-bold">${{ product.price.toFixed(2) }}</span>
             </div>
             <p class="text-sm text-stone-500 leading-relaxed">
               {{ product.description }}
             </p>
             
-            <button class="w-full mt-4 py-3 rounded-full border border-stone-200 text-stone-700 font-bold text-sm hover:bg-wabi-moss hover:text-white hover:border-wabi-moss transition-all">
+            <button
+              @click="addToCart(product)"
+              class="w-full mt-4 py-3 rounded-full border border-stone-200 text-stone-700 font-bold text-sm hover:bg-wabi-moss hover:text-white hover:border-wabi-moss transition-all active:scale-95">
               Add to Order
             </button>
           </div>
