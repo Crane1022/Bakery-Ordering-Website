@@ -13,14 +13,14 @@ import Profile from './page/Profile.vue'
 
 // Define the routes path
 const routes = [
-  { path: '/Bakery-Website/', component: Home },
-  { path: '/Bakery-Website/shop', component: Shop },
-  { path: '/Bakery-Website/checkout', component: Checkout },
-  { path: '/Bakery-Website/ingredients', component: Ingredients },
-  { path: '/Bakery-Website/reviews', component: Reviews },
-  { path: '/Bakery-Website/login', component: Login },
-  { path: '/Bakery-Website/register', component: Register },
-  { path: '/Bakery-Website/profile', component: Profile },
+  { path: '/Bakery-Ordering-Website/', component: Home },
+  { path: '/Bakery-Ordering-Website/shop', component: Shop },
+  { path: '/Bakery-Ordering-Website/checkout', component: Checkout },
+  { path: '/Bakery-Ordering-Website/ingredients', component: Ingredients },
+  { path: '/Bakery-Ordering-Website/reviews', component: Reviews },
+  { path: '/Bakery-Ordering-Website/login', component: Login },
+  { path: '/Bakery-Ordering-Website/register', component: Register },
+  { path: '/Bakery-Ordering-Website/profile', component: Profile },
 ]
 
 const router = createRouter({
