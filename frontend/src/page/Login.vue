@@ -17,7 +17,7 @@ const handleLogin = async () => {
   const success = await login({ email: email.value, password: password.value })
   if (success) {
     // send them back wherever they were headed (e.g. checkout), default to profile
-    router.push(route.query.redirect || '/Bakery-Website/profile')
+    router.push(route.query.redirect || '/Bakery-Ordering-Website/profile')
   }
 }
 </script>
@@ -65,7 +65,7 @@ const handleLogin = async () => {
 
       <p class="text-center text-sm text-stone-500 mt-8">
         Don't have an account?
-        <router-link to="/Bakery-Website/register" class="text-wabi-moss font-bold hover:underline">Create one</router-link>
+        <router-link to="/Bakery-Ordering-Website/register" class="text-wabi-moss font-bold hover:underline">Create one</router-link>
       </p>
     </div>
   </div>

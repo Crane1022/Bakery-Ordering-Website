@@ -29,7 +29,7 @@ const requestLogout = () => {
 const confirmLogout = () => {
   logout()
   showLogoutConfirm.value = false
-  router.push('/Bakery-Website/')
+  router.push('/Bakery-Ordering-Website/')
 }
 
 const formatDate = (iso) =>
@@ -47,7 +47,7 @@ const formatDate = (iso) =>
       <!-- Not logged in -->
       <div v-if="!currentUser" class="text-center py-20 bg-white rounded-3xl border border-dashed border-stone-300">
         <p class="text-stone-500 italic mb-4">You need to sign in to view your profile.</p>
-        <router-link to="/Bakery-Website/login" class="text-wabi-moss font-bold underline">Go to Login</router-link>
+        <router-link to="/Bakery-Ordering-Website/login" class="text-wabi-moss font-bold underline">Go to Login</router-link>
       </div>
 
       <template v-else>
@@ -136,7 +136,7 @@ const formatDate = (iso) =>
 
           <div v-else-if="myOrders.length === 0" class="text-center py-20 bg-white rounded-3xl border border-dashed border-stone-300">
             <p class="text-stone-500 italic">You haven't placed any orders yet.</p>
-            <router-link to="/Bakery-Website/shop" class="text-wabi-moss font-bold underline mt-4 inline-block">Start Shopping</router-link>
+            <router-link to="/Bakery-Ordering-Website/shop" class="text-wabi-moss font-bold underline mt-4 inline-block">Start Shopping</router-link>
           </div>
 
           <div v-for="order in myOrders" :key="order.id" class="bg-white p-6 rounded-[2rem] border border-stone-100 shadow-sm">

@@ -37,8 +37,8 @@ const openConfirm = () => {
   // Require login before checkout completes
   if (!isLoggedIn.value) {
     router.push({
-      path: '/Bakery-Website/login',
-      query: { redirect: '/Bakery-Website/checkout' }
+      path: '/Bakery-Ordering-Website/login',
+      query: { redirect: '/Bakery-Ordering-Website/checkout' }
     })
     return
   }
@@ -85,7 +85,7 @@ const confirmPayment = async () => {
         <div class="lg:col-span-2 space-y-6">
           <div v-if="cart.length === 0" class="text-center py-20 bg-white rounded-3xl border border-dashed border-stone-300">
             <p class="text-stone-500 italic">Your basket is empty.</p>
-            <router-link to="/Bakery-Website/shop" class="text-wabi-moss font-bold underline mt-4 inline-block">Back to Shop</router-link>
+            <router-link to="/Bakery-Ordering-Website/shop" class="text-wabi-moss font-bold underline mt-4 inline-block">Back to Shop</router-link>
           </div>
 
           <div v-for="item in cart" :key="item.id"
@@ -271,12 +271,12 @@ const confirmPayment = async () => {
 
               <div class="flex flex-col gap-3">
                 <router-link
-                  to="/Bakery-Website/profile"
+                  to="/Bakery-Ordering-Website/profile"
                   class="w-full py-3.5 rounded-full font-bold text-white bg-wabi-moss hover:bg-opacity-90 transition-all text-center">
                   View Purchase History
                 </router-link>
                 <router-link
-                  to="/Bakery-Website/shop"
+                  to="/Bakery-Ordering-Website/shop"
                   class="w-full py-3.5 rounded-full font-bold text-stone-700 border-2 border-stone-300/70 hover:bg-white/50 transition-all text-center">
                   Continue Shopping
                 </router-link>
