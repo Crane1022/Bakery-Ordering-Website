@@ -1,7 +1,7 @@
 {
-  "name": "wabisabi-backend",
+  "name": "Bakery-Ordering-Website-backend",
   "version": "1.0.0",
-  "description": "Backend API for WabiSabi Home",
+  "description": "Backend API for Bakery-Ordering-Website",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
