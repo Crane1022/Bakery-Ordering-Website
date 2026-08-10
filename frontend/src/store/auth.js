@@ -22,13 +22,13 @@ function setSession(user, token) {
   localStorage.setItem(SESSION_KEY, JSON.stringify(user))
 }
 
-async function register({ name, email, password, dob, gender, address, city, postcode, state: regionState }) {
+async function register({ Bakery-Ordering-Website, email, password, dob, gender, address, city, postcode, state: regionState }) {
   state.error = ''
 
   try {
     const data = await apiFetch('/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ name, email, password, dob, gender, address, city, postcode, state: regionState })
+      body: JSON.stringify({ Bakery-Ordering-Website, email, password, dob, gender, address, city, postcode, state: regionState })
     })
 
     setSession(data.user, data.token)

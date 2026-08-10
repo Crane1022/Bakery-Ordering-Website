@@ -40,7 +40,7 @@ const handleRegister = async () => {
   })
 
   if (success) {
-    router.push('/Bakery-Website/profile')
+    router.push('/Bakery-Ordering-Website/profile')
   }
 }
 </script>
@@ -179,7 +179,7 @@ const handleRegister = async () => {
 
       <p class="text-center text-sm text-stone-500 mt-8">
         Already have an account?
-        <router-link to="/Bakery-Website/login" class="text-wabi-moss font-bold hover:underline">Sign in</router-link>
+        <router-link to="/Bakery-Ordering-Website/login" class="text-wabi-moss font-bold hover:underline">Sign in</router-link>
       </p>
     </div>
   </div>
