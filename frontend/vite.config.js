@@ -4,7 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/Bakery-Ordering-Website/',
+  // base: '/Bakery-Ordering-Website/',
+  base: '/',
   plugins: [
     vue(),
     tailwindcss(),
