@@ -22,7 +22,9 @@ export async function testConnection() {
     conn.release();
   } catch (err) {
     console.error('MySQL connection failed:', err.message);
-    process.exit(1);
+    if (process.env.VERCEL !== '1') {
+      process.exit(1);
+    }
   }
 }
 

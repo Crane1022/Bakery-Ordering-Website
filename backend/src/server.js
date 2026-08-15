@@ -24,10 +24,14 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-const PORT = process.env.PORT || 3000;
-
-testConnection().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+// Vercel sets process.env.VERCEL = '1' automatically
+if (process.env.VERCEL !== '1') {
+  const PORT = process.env.PORT || 3000;
+  testConnection().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
   });
-});
+}
+
+export default app;
