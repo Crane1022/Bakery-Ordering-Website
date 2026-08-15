@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   // base: '/Bakery-Ordering-Website/',
-  base: '/',
+  base: process.env.VERCEL ? '/' : '/Bakery-Ordering-Website/',
   plugins: [
     vue(),
     tailwindcss(),
