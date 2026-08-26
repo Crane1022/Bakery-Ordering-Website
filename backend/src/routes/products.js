@@ -37,4 +37,14 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.get('/debug-env', (req, res) => {
+  res.json({
+    DB_HOST: process.env.DB_HOST ? 'SET' : 'MISSING',
+    DB_PORT: process.env.DB_PORT ? 'SET' : 'MISSING',
+    DB_USER: process.env.DB_USER ? 'SET' : 'MISSING',
+    DB_PASSWORD: process.env.DB_PASSWORD ? 'SET' : 'MISSING',
+    DB_NAME: process.env.DB_NAME ? 'SET' : 'MISSING',
+  });
+});
+
 export default router;
