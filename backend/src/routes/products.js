@@ -4,8 +4,6 @@ import pool from '../config/db.js';
 const router = Router();
 
 // GET /api/products
-// "image_url AS image" matches the field name your frontend (products.js,
-// cart.js) already expects, so components don't need to change.
 router.get('/', async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -17,6 +15,17 @@ router.get('/', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch products' });
   }
+});
+
+// GET /api/products/debug-env  (must come BEFORE /:id)
+router.get('/debug-env', (req, res) => {
+  res.json({
+    DB_HOST: process.env.DB_HOST ? 'SET' : 'MISSING',
+    DB_PORT: process.env.DB_PORT ? 'SET' : 'MISSING',
+    DB_USER: process.env.DB_USER ? 'SET' : 'MISSING',
+    DB_PASSWORD: process.env.DB_PASSWORD ? 'SET' : 'MISSING',
+    DB_NAME: process.env.DB_NAME ? 'SET' : 'MISSING',
+  });
 });
 
 // GET /api/products/:id
@@ -35,16 +44,6 @@ router.get('/:id', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch product' });
   }
-});
-
-router.get('/debug-env', (req, res) => {
-  res.json({
-    DB_HOST: process.env.DB_HOST ? 'SET' : 'MISSING',
-    DB_PORT: process.env.DB_PORT ? 'SET' : 'MISSING',
-    DB_USER: process.env.DB_USER ? 'SET' : 'MISSING',
-    DB_PASSWORD: process.env.DB_PASSWORD ? 'SET' : 'MISSING',
-    DB_NAME: process.env.DB_NAME ? 'SET' : 'MISSING',
-  });
 });
 
 export default router;
