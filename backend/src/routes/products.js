@@ -18,14 +18,28 @@ router.get('/', async (req, res) => {
 });
 
 // GET /api/products/debug-env  (must come BEFORE /:id)
-router.get('/debug-env', (req, res) => {
-  res.json({
+router.get('/debug-env', async (req, res) => {
+  const envStatus = {
     DB_HOST: process.env.DB_HOST ? 'SET' : 'MISSING',
     DB_PORT: process.env.DB_PORT ? 'SET' : 'MISSING',
     DB_USER: process.env.DB_USER ? 'SET' : 'MISSING',
     DB_PASSWORD: process.env.DB_PASSWORD ? 'SET' : 'MISSING',
     DB_NAME: process.env.DB_NAME ? 'SET' : 'MISSING',
-  });
+  };
+
+  try {
+    const conn = await pool.getConnection();
+    await conn.query('SELECT 1');
+    conn.release();
+    res.json({ ...envStatus, dbConnection: 'SUCCESS' });
+  } catch (err) {
+    res.json({
+      ...envStatus,
+      dbConnection: 'FAILED',
+      errorMessage: err.message,
+      errorCode: err.code || null
+    });
+  }
 });
 
 // GET /api/products/:id
